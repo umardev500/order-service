@@ -13,14 +13,5 @@ clean:
 create:
 	grpcurl --plaintext -d '{"buyer": {"customer_id":"16678237623", "name": "SMK Walisongo", "user": "walisongo"}, "product": {"product_id": "16672232323", "name": "Trial 30 days", "price": 10, "duration": 30, "description": "This is the description"}}' localhost:5011 OrderService.Create
 
-delete:
-	grpcurl --plaintext -d '{"Order_id": "1671033950"}' localhost:5011 OrderService.Delete
-
-update:
-	grpcurl --plaintext -d '{"Order_id": "1671034841", "detail": {"name": "The name of Order updated", "price": 0, "duration": 30, "description": "The updated description"}}' localhost:5011 OrderService.Update
-
-findone:
-	grpcurl --plaintext -d '{"Order_id": "1671034841"}' localhost:5011 OrderService.FindOne
-
-findall:
-	grpcurl --plaintext localhost:5011 OrderService.FindAll
+changeStatus:
+	grpcurl --plaintext -d '{"order_id": "1671033950"}' localhost:5011 OrderService.Delete

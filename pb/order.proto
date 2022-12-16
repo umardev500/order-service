@@ -38,6 +38,12 @@ message OrderCreateRequest {
     OrderProduct product = 2;
 }
 
+message OrderChangeStatus {
+    string order_id = 1;
+    string status = 2;
+}
+
 service OrderService {
     rpc Create(OrderCreateRequest) returns (Empty) {}
+    rpc ChangeStatus(OrderChangeStatus) returns (OperationResponse) {}
 }

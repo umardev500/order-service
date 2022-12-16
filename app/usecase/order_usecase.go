@@ -22,6 +22,13 @@ func NewOrderUsecase(repo domain.OrderRepository) domain.OrderUsecase {
 // Template
 // func (pu *OrderUsecase) {}
 
+func (pu *OrderUsecase) ChangeStatus(req *pb.OrderChangeStatus) (affected bool, err error) {
+	updatedTime := time.Now().Unix()
+	affected, err = pu.repository.ChangeStatus(req, updatedTime)
+
+	return
+}
+
 func (pu *OrderUsecase) Save(req *pb.OrderCreateRequest) (err error) {
 	createdTime := time.Now().Unix()
 	err = pu.repository.Save(req, createdTime)
