@@ -8,6 +8,6 @@ type OrderUsecase interface {
 }
 
 type OrderRepository interface {
-	Save(req *pb.OrderCreateRequest, createdTime int64) error
+	Save(req *pb.OrderCreateRequest, generatedId string, createdTime int64) error
 	ChangeStatus(req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error)
 }

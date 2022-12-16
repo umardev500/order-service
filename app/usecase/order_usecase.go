@@ -3,6 +3,7 @@ package usecase
 import (
 	"order/domain"
 	"order/pb"
+	"strconv"
 	"time"
 )
 
@@ -30,8 +31,10 @@ func (pu *OrderUsecase) ChangeStatus(req *pb.OrderChangeStatus) (affected bool, 
 }
 
 func (pu *OrderUsecase) Save(req *pb.OrderCreateRequest) (err error) {
-	createdTime := time.Now().Unix()
-	err = pu.repository.Save(req, createdTime)
+	t := time.Now()
+	createdTime := t.Unix()
+	generatedId := strconv.Itoa(int(t.UnixMilli()))
+	err = pu.repository.Save(req, generatedId, createdTime)
 
 	return
 }

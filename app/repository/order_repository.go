@@ -45,7 +45,7 @@ func (pr *OrderRepository) ChangeStatus(req *pb.OrderChangeStatus, updatedTime i
 	return
 }
 
-func (pr *OrderRepository) Save(req *pb.OrderCreateRequest, createdTime int64) (err error) {
+func (pr *OrderRepository) Save(req *pb.OrderCreateRequest, generatedId string, createdTime int64) (err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -64,6 +64,7 @@ func (pr *OrderRepository) Save(req *pb.OrderCreateRequest, createdTime int64) (
 	}
 
 	data := bson.D{
+		{Key: "order_id", Value: generatedId},
 		{Key: "buyer", Value: buyer},
 		{Key: "product", Value: product},
 		{Key: "status", Value: "pending"},
