@@ -21,7 +21,7 @@ func main() {
 	}
 
 	// create a connection to the database
-	db := config.NewConn().Database("db_product")
+	db := config.NewConn().Database("db_order")
 
 	// get the port number from the environment
 	port := os.Getenv("PORT")
@@ -38,8 +38,8 @@ func main() {
 	// enable reflection on the server
 	reflection.Register(GRPServer)
 
-	// create a new ProductService handler with the database connection
-	handler := injector.NewProductInjector(db)
+	// create a new OrderService handler with the database connection
+	handler := injector.NewOrderInjector(db)
 
 	// register the handler with the gRPC server
 	pb.RegisterOrderServiceServer(GRPServer, handler)

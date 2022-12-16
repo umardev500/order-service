@@ -15,6 +15,13 @@ message OrderProduct {
     string name = 2;
     int64 price = 3;
     int64 duration = 4;
+    string description = 5;
+}
+
+message OrderBuyer {
+    string customer_id = 1;
+    string name = 2;
+    string user = 3;
 }
 
 message OrderResponse {
@@ -27,7 +34,7 @@ message OrderResponse {
 }
 
 message OrderCreateRequest {
-    string customer_id = 1;
+    OrderBuyer buyer = 1;
     OrderProduct product = 2;
 }
 

@@ -1,5 +1,11 @@
 package domain
 
-type OrderUsecase interface{}
+import "order/pb"
 
-type OrderRepository interface{}
+type OrderUsecase interface {
+	Save(req *pb.OrderCreateRequest) error
+}
+
+type OrderRepository interface {
+	Save(req *pb.OrderCreateRequest, createdTime int64) error
+}

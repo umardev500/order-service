@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func NewProductInjector(db *mongo.Database) *delivery.OrderDelivery {
+func NewOrderInjector(db *mongo.Database) *delivery.OrderDelivery {
 	repo := repository.NewOrderRepository(db)
 	usecase := usecase.NewOrderUsecase(repo)
 

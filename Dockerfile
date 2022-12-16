@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-EXPOSE 5010
+EXPOSE 5011
 
 CMD air

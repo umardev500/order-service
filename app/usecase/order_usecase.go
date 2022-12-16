@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"order/domain"
+	"order/pb"
+	"time"
 )
 
 // OrderUsecase defines the use case for managing Orders.
@@ -19,3 +21,10 @@ func NewOrderUsecase(repo domain.OrderRepository) domain.OrderUsecase {
 
 // Template
 // func (pu *OrderUsecase) {}
+
+func (pu *OrderUsecase) Save(req *pb.OrderCreateRequest) (err error) {
+	createdTime := time.Now().Unix()
+	err = pu.repository.Save(req, createdTime)
+
+	return
+}
