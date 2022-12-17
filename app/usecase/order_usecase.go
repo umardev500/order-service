@@ -22,6 +22,13 @@ func NewOrderUsecase(repo domain.OrderRepository) domain.OrderUsecase {
 
 // Template
 // func (pu *OrderUsecase) {}
+
+func (pu *OrderUsecase) FindAll(req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error) {
+	res, err = pu.repository.FindAll(req)
+
+	return
+}
+
 func (pu *OrderUsecase) FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
 	res, err = pu.repository.FindOne(req)
 

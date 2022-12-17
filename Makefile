@@ -18,3 +18,6 @@ changeStatus:
 
 findOne:
 	grpcurl --plaintext -d '{"order_id": "1671283098783"}' localhost:5011 OrderService.FindOne
+
+findAll:
+	grpcurl --plaintext -d '{"status": "pending"}' localhost:5011 OrderService.FindAll
