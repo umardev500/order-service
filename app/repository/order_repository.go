@@ -55,7 +55,7 @@ func (pr *OrderRepository) Save(req *pb.OrderCreateRequest, generatedId string, 
 		{Key: "user", Value: req.Buyer.User},
 	}
 
-	product := []bson.D{}
+	products := []bson.D{}
 
 	for _, val := range req.Product {
 		each := bson.D{
@@ -66,13 +66,13 @@ func (pr *OrderRepository) Save(req *pb.OrderCreateRequest, generatedId string, 
 			{Key: "description", Value: val.Description},
 		}
 
-		product = append(product, each)
+		products = append(products, each)
 	}
 
 	data := bson.D{
 		{Key: "order_id", Value: generatedId},
 		{Key: "buyer", Value: buyer},
-		{Key: "product", Value: product},
+		{Key: "product", Value: products},
 		{Key: "status", Value: "pending"},
 		{Key: "created_at", Value: createdTime},
 	}
