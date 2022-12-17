@@ -28,6 +28,44 @@ func NewOrderRepository(db *mongo.Database) domain.OrderRepository {
 // 	defer cancel()
 // }
 
+func (pr *OrderRepository) FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var order domain.Order
+
+	filter := bson.M{"order_id": req.OrderId}
+	err = pr.orders.FindOne(ctx, filter).Decode(&order)
+
+	products := []*pb.OrderProduct{}
+	for _, val := range order.Product {
+		each := pb.OrderProduct{
+			ProductId:   val.ProductId,
+			Name:        val.Name,
+			Price:       val.Price,
+			Duration:    val.Duration,
+			Description: val.Description,
+		}
+
+		products = append(products, &each)
+	}
+
+	res = &pb.Order{
+		OrderId: order.OrderId,
+		Buyer: &pb.OrderBuyer{
+			CustomerId: order.Buyer.CustomerId,
+			Name:       order.Buyer.Name,
+			User:       order.Buyer.User,
+		},
+		Product:   products,
+		Status:    order.Status,
+		CreatedAt: order.CreatedAt,
+		UpdatedAt: order.UpdatedAt,
+	}
+
+	return
+}
+
 func (pr *OrderRepository) ChangeStatus(req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

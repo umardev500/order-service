@@ -22,6 +22,11 @@ func NewOrderUsecase(repo domain.OrderRepository) domain.OrderUsecase {
 
 // Template
 // func (pu *OrderUsecase) {}
+func (pu *OrderUsecase) FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
+	res, err = pu.repository.FindOne(req)
+
+	return
+}
 
 func (pu *OrderUsecase) ChangeStatus(req *pb.OrderChangeStatus) (affected bool, err error) {
 	updatedTime := time.Now().Unix()

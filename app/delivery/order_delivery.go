@@ -18,7 +18,12 @@ func NewOrderDelivery(usecase domain.OrderUsecase) *OrderDelivery {
 }
 
 // Template
-//func (pd *OrderDelivery) Delete(ctx context.Context, req *pb.) (res *pb., err error) {}
+// func (pd *OrderDelivery) Delete(ctx context.Context, req *pb.) (res *pb., err error) {}
+func (pd *OrderDelivery) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
+	res, err = pd.usecase.FindOne(req)
+
+	return
+}
 
 func (pd *OrderDelivery) ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus) (res *pb.OperationResponse, err error) {
 	affected, err := pd.usecase.ChangeStatus(req)

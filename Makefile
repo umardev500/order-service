@@ -15,3 +15,6 @@ create:
 
 changeStatus:
 	grpcurl --plaintext -d '{"order_id": "1671193878472", "status": "settlement"}' localhost:5011 OrderService.ChangeStatus
+
+findOne:
+	grpcurl --plaintext -d '{"order_id": "1671283098783"}' localhost:5011 OrderService.FindOne
