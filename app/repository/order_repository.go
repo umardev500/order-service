@@ -25,6 +25,34 @@ func NewOrderRepository(db *mongo.Database) domain.OrderRepository {
 	}
 }
 
+func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Order) {
+	products := []*pb.OrderProduct{}
+	for _, val := range each.Product {
+		products = append(products, &pb.OrderProduct{
+			ProductId:   val.ProductId,
+			Name:        val.Name,
+			Price:       val.Price,
+			Duration:    val.Duration,
+			Description: val.Description,
+		})
+	}
+
+	order = &pb.Order{
+		OrderId: each.OrderId,
+		Buyer: &pb.OrderBuyer{
+			CustomerId: each.Buyer.CustomerId,
+			Name:       each.Buyer.Name,
+			User:       each.Buyer.User,
+		},
+		Product:   products,
+		Status:    each.Status,
+		CreatedAt: each.CreatedAt,
+		UpdatedAt: each.UpdatedAt,
+	}
+
+	return
+}
+
 // Template
 // func (pr *OrderRepository) {
 // 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -85,29 +113,7 @@ func (pr *OrderRepository) FindAll(req *pb.OrderFindAllRequest) (orders *pb.Orde
 			return
 		}
 
-		products := []*pb.OrderProduct{}
-		for _, val := range each.Product {
-			products = append(products, &pb.OrderProduct{
-				ProductId:   val.ProductId,
-				Name:        val.Name,
-				Price:       val.Price,
-				Duration:    val.Duration,
-				Description: val.Description,
-			})
-		}
-
-		order := &pb.Order{
-			OrderId: each.OrderId,
-			Buyer: &pb.OrderBuyer{
-				CustomerId: each.Buyer.CustomerId,
-				Name:       each.Buyer.Name,
-				User:       each.Buyer.User,
-			},
-			Product:   products,
-			Status:    each.Status,
-			CreatedAt: each.CreatedAt,
-			UpdatedAt: each.UpdatedAt,
-		}
+		order := pr.parseOrderResponse(each)
 
 		orders.Orders = append(orders.Orders, order)
 	}
@@ -142,31 +148,7 @@ func (pr *OrderRepository) FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, 
 	filter := bson.M{"order_id": req.OrderId}
 	err = pr.orders.FindOne(ctx, filter).Decode(&order)
 
-	products := []*pb.OrderProduct{}
-	for _, val := range order.Product {
-		each := pb.OrderProduct{
-			ProductId:   val.ProductId,
-			Name:        val.Name,
-			Price:       val.Price,
-			Duration:    val.Duration,
-			Description: val.Description,
-		}
-
-		products = append(products, &each)
-	}
-
-	res = &pb.Order{
-		OrderId: order.OrderId,
-		Buyer: &pb.OrderBuyer{
-			CustomerId: order.Buyer.CustomerId,
-			Name:       order.Buyer.Name,
-			User:       order.Buyer.User,
-		},
-		Product:   products,
-		Status:    order.Status,
-		CreatedAt: order.CreatedAt,
-		UpdatedAt: order.UpdatedAt,
-	}
+	res = pr.parseOrderResponse(order)
 
 	return
 }
