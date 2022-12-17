@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type OrderServiceClient interface {
 	Create(ctx context.Context, in *OrderCreateRequest, opts ...grpc.CallOption) (*Empty, error)
 	ChangeStatus(ctx context.Context, in *OrderChangeStatus, opts ...grpc.CallOption) (*OperationResponse, error)
+	FindOne(ctx context.Context, in *OrderFindOneRequest, opts ...grpc.CallOption) (*Order, error)
 }
 
 type orderServiceClient struct {
@@ -52,12 +53,22 @@ func (c *orderServiceClient) ChangeStatus(ctx context.Context, in *OrderChangeSt
 	return out, nil
 }
 
+func (c *orderServiceClient) FindOne(ctx context.Context, in *OrderFindOneRequest, opts ...grpc.CallOption) (*Order, error) {
+	out := new(Order)
+	err := c.cc.Invoke(ctx, "/OrderService/FindOne", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrderServiceServer is the server API for OrderService service.
 // All implementations must embed UnimplementedOrderServiceServer
 // for forward compatibility
 type OrderServiceServer interface {
 	Create(context.Context, *OrderCreateRequest) (*Empty, error)
 	ChangeStatus(context.Context, *OrderChangeStatus) (*OperationResponse, error)
+	FindOne(context.Context, *OrderFindOneRequest) (*Order, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedOrderServiceServer) Create(context.Context, *OrderCreateReque
 }
 func (UnimplementedOrderServiceServer) ChangeStatus(context.Context, *OrderChangeStatus) (*OperationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeStatus not implemented")
+}
+func (UnimplementedOrderServiceServer) FindOne(context.Context, *OrderFindOneRequest) (*Order, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindOne not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -120,6 +134,24 @@ func _OrderService_ChangeStatus_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrderService_FindOne_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderFindOneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).FindOne(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/OrderService/FindOne",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).FindOne(ctx, req.(*OrderFindOneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrderService_ServiceDesc is the grpc.ServiceDesc for OrderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangeStatus",
 			Handler:    _OrderService_ChangeStatus_Handler,
+		},
+		{
+			MethodName: "FindOne",
+			Handler:    _OrderService_FindOne_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

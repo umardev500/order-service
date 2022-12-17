@@ -55,12 +55,18 @@ func (pr *OrderRepository) Save(req *pb.OrderCreateRequest, generatedId string, 
 		{Key: "user", Value: req.Buyer.User},
 	}
 
-	product := bson.D{
-		{Key: "product_id", Value: req.Product.ProductId},
-		{Key: "name", Value: req.Product.Name},
-		{Key: "price", Value: req.Product.Price},
-		{Key: "duration", Value: req.Product.Duration},
-		{Key: "description", Value: req.Product.Description},
+	product := []bson.D{}
+
+	for _, val := range req.Product {
+		each := bson.D{
+			{Key: "product_id", Value: val.ProductId},
+			{Key: "name", Value: val.Name},
+			{Key: "price", Value: val.Price},
+			{Key: "duration", Value: val.Duration},
+			{Key: "description", Value: val.Description},
+		}
+
+		product = append(product, each)
 	}
 
 	data := bson.D{

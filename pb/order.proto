@@ -8,7 +8,14 @@ message OperationResponse {
     bool is_affected = 1;
 }
 
-message Order {}
+message Order {
+    string order_id = 1;
+    OrderBuyer buyer = 2;
+    repeated OrderProduct product = 3;
+    string status = 4;
+    int64 created_at = 5;
+    int64 updated_at = 6;
+}
 
 message OrderProduct {
     string product_id = 1;
@@ -24,18 +31,9 @@ message OrderBuyer {
     string user = 3;
 }
 
-message OrderResponse {
-    string order_id = 1;
-    string customer_id = 2;
-    OrderProduct product = 3;
-    string status = 4;
-    int64 created_at = 5;
-    int64 updated_at = 6;
-}
-
 message OrderCreateRequest {
     OrderBuyer buyer = 1;
-    OrderProduct product = 2;
+    repeated OrderProduct product = 2;
 }
 
 message OrderChangeStatus {
@@ -43,7 +41,12 @@ message OrderChangeStatus {
     string status = 2;
 }
 
+message OrderFindOneRequest {
+    string order_id = 1;
+}
+
 service OrderService {
     rpc Create(OrderCreateRequest) returns (Empty) {}
     rpc ChangeStatus(OrderChangeStatus) returns (OperationResponse) {}
+    rpc FindOne(OrderFindOneRequest) returns (Order) {}
 }
