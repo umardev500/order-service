@@ -89,7 +89,7 @@ func (pr *OrderRepository) FindAll(req *pb.OrderFindAllRequest) (orders *pb.Orde
 	findOpt := options.Find()
 
 	if req.Sort == "desc" {
-		findOpt.SetSort(bson.M{"customer_id": -1})
+		findOpt.SetSort(bson.M{"order_id": -1})
 	}
 
 	page := req.Page
