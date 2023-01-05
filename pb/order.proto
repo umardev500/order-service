@@ -27,9 +27,18 @@ message OrderBuyer {
     string user = 3;
 }
 
+message OrderPayment {
+    string payment_type = 1;
+    string order_id = 2;
+    string bank = 3;
+    string va_number = 4;
+    int64 gross_amount = 5;
+}
+
 message OrderCreateRequest {
     OrderBuyer buyer = 1;
     repeated OrderProduct product = 2;
+    OrderPayment payment = 3;
 }
 
 message OrderChangeStatus {
