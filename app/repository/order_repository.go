@@ -196,15 +196,36 @@ func (pr *OrderRepository) Save(req *pb.OrderCreateRequest, generatedId string, 
 		products = append(products, each)
 	}
 
+	payment := bson.D{}
+	if req.Payment != nil {
+		payment = bson.D{
+			{Key: "payment_type", Value: req.Payment.PaymentType},
+			{Key: "order_id", Value: req.Payment.OrderId},
+			{Key: "bank", Value: req.Payment.Bank},
+			{Key: "va_number", Value: req.Payment.VaNumber},
+			{Key: "gross_amount", Value: req.Payment.GrossAmount},
+		}
+	}
+
 	data := bson.D{
 		{Key: "order_id", Value: generatedId},
 		{Key: "buyer", Value: buyer},
 		{Key: "product", Value: products},
+		{Key: "payment", Value: payment},
 		{Key: "status", Value: "pending"},
 		{Key: "created_at", Value: createdTime},
 	}
 
-	_, err = pr.orders.InsertOne(ctx, data)
+	filteredData := bson.D{}
+	for _, x := range data {
+		if x.Key == "payment" && req.Payment == nil {
+			continue
+		}
+
+		filteredData = append(filteredData, x)
+	}
+
+	_, err = pr.orders.InsertOne(ctx, filteredData)
 
 	return
 }
