@@ -99,23 +99,25 @@ func (pr *OrderRepository) FindAll(req *pb.OrderFindAllRequest) (orders *pb.Orde
 	findOpt.SetSkip(offset)
 	findOpt.SetLimit(perPage)
 
-	cur, err := pr.orders.Find(ctx, filter, findOpt)
-	if err != nil {
-		return
-	}
-
-	defer cur.Close(ctx)
-
-	for cur.Next(ctx) {
-		each := domain.Order{}
-		err = cur.Decode(&each)
+	if !req.CountOnly {
+		cur, err := pr.orders.Find(ctx, filter, findOpt)
 		if err != nil {
-			return
+			return nil, err
 		}
 
-		order := pr.parseOrderResponse(each)
+		defer cur.Close(ctx)
 
-		orders.Orders = append(orders.Orders, order)
+		for cur.Next(ctx) {
+			each := domain.Order{}
+			err = cur.Decode(&each)
+			if err != nil {
+				return nil, err
+			}
+
+			order := pr.parseOrderResponse(each)
+
+			orders.Orders = append(orders.Orders, order)
+		}
 	}
 
 	rows, _ := pr.orders.CountDocuments(ctx, filter)
