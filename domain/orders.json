@@ -1,0 +1,21 @@
+[
+    {
+        "order_id": "166792882834",
+        "buyer": {
+            "customer_id": "1667288272323",
+            "name": "SMK Walisongo",
+                "user": "walisongo"
+        },
+        "product": [
+            {
+                "product_id": "166723827823423",
+                "name": "Paket Lite",
+                "price": 150000,
+                "duration": 30,
+                "description": "Product description"
+            }
+        ],
+        "status": "pending",
+        "created_at": 1667923039834 
+    }
+]
