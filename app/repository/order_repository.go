@@ -168,7 +168,7 @@ func (pr *OrderRepository) ChangeStatus(req *pb.OrderChangeStatus, updatedTime i
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	filter := bson.M{"order_id": req.OrderId}
+	filter := bson.M{"payment.order_id": req.OrderId}
 	data := bson.M{"status": req.Status, "updated_at": updatedTime}
 	set := bson.M{"$set": data}
 
