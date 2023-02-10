@@ -170,6 +170,10 @@ func (pr *OrderRepository) ChangeStatus(req *pb.OrderChangeStatus, updatedTime i
 
 	filter := bson.M{"payment.order_id": req.OrderId}
 	data := bson.M{"status": req.Status, "updated_at": updatedTime}
+	if req.Status == "settlement" {
+		data["settlement_time"] = req.SettlementTime
+	}
+
 	set := bson.M{"$set": data}
 
 	resp, err := pr.orders.UpdateOne(ctx, filter, set)

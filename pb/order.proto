@@ -45,6 +45,7 @@ message OrderCreateRequest {
 message OrderChangeStatus {
     string order_id = 1;
     string status = 2;
+    int64 settlement_time = 3;
 }
 
 message OrderFindOneRequest {
