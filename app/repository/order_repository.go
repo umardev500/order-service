@@ -37,6 +37,14 @@ func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Orde
 		})
 	}
 
+	payment := &pb.OrderPayment{
+		PaymentType: each.Payment.PaymentType,
+		OrderId:     each.Payment.PaymentType,
+		Bank:        each.Payment.Bank,
+		VaNumber:    each.Payment.VaNumber,
+		GrossAmount: each.Payment.GrossAmount,
+	}
+
 	order = &pb.Order{
 		OrderId: each.OrderId,
 		Buyer: &pb.OrderBuyer{
@@ -45,6 +53,7 @@ func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Orde
 			User:       each.Buyer.User,
 		},
 		Product:   products,
+		Payment:   payment,
 		Status:    each.Status,
 		CreatedAt: each.CreatedAt,
 		UpdatedAt: each.UpdatedAt,

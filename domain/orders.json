@@ -15,6 +15,13 @@
                 "description": "Product description"
             }
         ],
+        "payment": {
+            "payment_type": "bank_transfer",
+            "order_id": "166792882834",
+            "bank": "bri",
+            "va_number": "845379820491288480",
+            "gross_amount": 5000
+        },
         "status": "pending",
         "created_at": 1667923039834 
     }
