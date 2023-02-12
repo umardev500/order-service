@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"order/domain"
 	"order/pb"
 	"time"
@@ -22,35 +23,35 @@ func NewOrderUsecase(repo domain.OrderRepository) domain.OrderUsecase {
 // Template
 // func (pu *OrderUsecase) {}
 
-func (pu *OrderUsecase) SumIncome() (res int64, err error) {
-	res, err = pu.repository.SumIncome()
+func (pu *OrderUsecase) SumIncome(ctx context.Context) (res int64, err error) {
+	res, err = pu.repository.SumIncome(ctx)
 
 	return
 }
 
-func (pu *OrderUsecase) FindAll(req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error) {
-	res, err = pu.repository.FindAll(req)
+func (pu *OrderUsecase) FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error) {
+	res, err = pu.repository.FindAll(ctx, req)
 
 	return
 }
 
-func (pu *OrderUsecase) FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
-	res, err = pu.repository.FindOne(req)
+func (pu *OrderUsecase) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
+	res, err = pu.repository.FindOne(ctx, req)
 
 	return
 }
 
-func (pu *OrderUsecase) ChangeStatus(req *pb.OrderChangeStatus) (affected bool, err error) {
+func (pu *OrderUsecase) ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus) (affected bool, err error) {
 	updatedTime := time.Now().Unix()
-	affected, err = pu.repository.ChangeStatus(req, updatedTime)
+	affected, err = pu.repository.ChangeStatus(ctx, req, updatedTime)
 
 	return
 }
 
-func (pu *OrderUsecase) Save(req *pb.OrderCreateRequest) (err error) {
+func (pu *OrderUsecase) Save(ctx context.Context, req *pb.OrderCreateRequest) (err error) {
 	t := time.Now()
 	createdTime := t.Unix()
-	err = pu.repository.Save(req, createdTime)
+	err = pu.repository.Save(ctx, req, createdTime)
 
 	return
 }

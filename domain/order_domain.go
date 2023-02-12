@@ -1,6 +1,9 @@
 package domain
 
-import "order/pb"
+import (
+	"context"
+	"order/pb"
+)
 
 type OrderBuyer struct {
 	CustomerId string `bson:"customer_id"`
@@ -35,17 +38,17 @@ type Order struct {
 }
 
 type OrderUsecase interface {
-	Save(req *pb.OrderCreateRequest) error
-	ChangeStatus(req *pb.OrderChangeStatus) (affected bool, err error)
-	FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error)
-	FindAll(req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error)
-	SumIncome() (res int64, err error)
+	Save(ctx context.Context, req *pb.OrderCreateRequest) error
+	ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus) (affected bool, err error)
+	FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error)
+	FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error)
+	SumIncome(ctx context.Context) (res int64, err error)
 }
 
 type OrderRepository interface {
-	Save(req *pb.OrderCreateRequest, createdTime int64) error
-	ChangeStatus(req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error)
-	FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error)
-	FindAll(req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error)
-	SumIncome() (res int64, err error)
+	Save(ctx context.Context, req *pb.OrderCreateRequest, createdTime int64) error
+	ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error)
+	FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error)
+	FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error)
+	SumIncome(ctx context.Context) (res int64, err error)
 }

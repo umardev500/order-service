@@ -23,7 +23,7 @@ func NewOrderDelivery(usecase domain.OrderUsecase) *OrderDelivery {
 // func (pd *OrderDelivery) Delete(ctx context.Context, req *pb.) (res *pb., err error) {}
 
 func (pd *OrderDelivery) SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res *pb.OrderSumResponse, err error) {
-	total, err := pd.usecase.SumIncome()
+	total, err := pd.usecase.SumIncome(ctx)
 	if err == mongo.ErrNoDocuments {
 		res = &pb.OrderSumResponse{IsEmpty: true}
 		err = nil
@@ -37,25 +37,25 @@ func (pd *OrderDelivery) SumIncome(ctx context.Context, req *pb.OrderSumIncomeRe
 }
 
 func (pd *OrderDelivery) FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error) {
-	res, err = pd.usecase.FindAll(req)
+	res, err = pd.usecase.FindAll(ctx, req)
 
 	return
 }
 
 func (pd *OrderDelivery) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
-	res, err = pd.usecase.FindOne(req)
+	res, err = pd.usecase.FindOne(ctx, req)
 
 	return
 }
 
 func (pd *OrderDelivery) ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus) (res *pb.OperationResponse, err error) {
-	affected, err := pd.usecase.ChangeStatus(req)
+	affected, err := pd.usecase.ChangeStatus(ctx, req)
 
 	return &pb.OperationResponse{IsAffected: affected}, err
 }
 
 func (pd *OrderDelivery) Create(ctx context.Context, req *pb.OrderCreateRequest) (res *pb.Empty, err error) {
-	err = pd.usecase.Save(req)
+	err = pd.usecase.Save(ctx, req)
 	res = &pb.Empty{}
 
 	return

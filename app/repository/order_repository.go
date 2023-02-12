@@ -5,7 +5,6 @@ import (
 	"math"
 	"order/domain"
 	"order/pb"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -68,10 +67,7 @@ func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Orde
 // 	defer cancel()
 // }
 
-func (pr *OrderRepository) SumIncome() (res int64, err error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func (pr *OrderRepository) SumIncome(ctx context.Context) (res int64, err error) {
 	pipeline := []bson.M{
 		{
 			"$match": bson.M{
@@ -110,10 +106,7 @@ func (pr *OrderRepository) SumIncome() (res int64, err error) {
 	return
 }
 
-func (pr *OrderRepository) FindAll(req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error) {
 	orders = &pb.OrderFindAllResponse{}
 	s := req.Search
 
@@ -192,10 +185,7 @@ func (pr *OrderRepository) FindAll(req *pb.OrderFindAllRequest) (orders *pb.Orde
 	return
 }
 
-func (pr *OrderRepository) FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func (pr *OrderRepository) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
 	var order domain.Order
 
 	filter := bson.M{"order_id": req.OrderId}
@@ -206,10 +196,7 @@ func (pr *OrderRepository) FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, 
 	return
 }
 
-func (pr *OrderRepository) ChangeStatus(req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func (pr *OrderRepository) ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error) {
 	filter := bson.M{"payment.order_id": req.OrderId}
 	data := bson.M{"status": req.Status, "updated_at": updatedTime}
 	if req.Status == "settlement" {
@@ -227,10 +214,7 @@ func (pr *OrderRepository) ChangeStatus(req *pb.OrderChangeStatus, updatedTime i
 	return
 }
 
-func (pr *OrderRepository) Save(req *pb.OrderCreateRequest, createdTime int64) (err error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
+func (pr *OrderRepository) Save(ctx context.Context, req *pb.OrderCreateRequest, createdTime int64) (err error) {
 	buyer := bson.D{
 		{Key: "customer_id", Value: req.Buyer.CustomerId},
 		{Key: "name", Value: req.Buyer.Name},
