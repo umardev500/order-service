@@ -39,6 +39,7 @@ type OrderUsecase interface {
 	ChangeStatus(req *pb.OrderChangeStatus) (affected bool, err error)
 	FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error)
 	FindAll(req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error)
+	SumIncome() (res int64, err error)
 }
 
 type OrderRepository interface {
@@ -46,4 +47,5 @@ type OrderRepository interface {
 	ChangeStatus(req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error)
 	FindOne(req *pb.OrderFindOneRequest) (res *pb.Order, err error)
 	FindAll(req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error)
+	SumIncome() (res int64, err error)
 }

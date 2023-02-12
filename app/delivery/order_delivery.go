@@ -4,6 +4,8 @@ import (
 	"context"
 	"order/domain"
 	"order/pb"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type OrderDelivery struct {
@@ -19,6 +21,20 @@ func NewOrderDelivery(usecase domain.OrderUsecase) *OrderDelivery {
 
 // Template
 // func (pd *OrderDelivery) Delete(ctx context.Context, req *pb.) (res *pb., err error) {}
+
+func (pd *OrderDelivery) SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res *pb.OrderSumResponse, err error) {
+	total, err := pd.usecase.SumIncome()
+	if err == mongo.ErrNoDocuments {
+		res = &pb.OrderSumResponse{IsEmpty: true}
+		err = nil
+
+		return
+	}
+
+	res = &pb.OrderSumResponse{Payload: &pb.OrderSumPayload{Total: total}}
+
+	return
+}
 
 func (pd *OrderDelivery) FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error) {
 	res, err = pd.usecase.FindAll(req)

@@ -70,9 +70,23 @@ message OrderFindAllResponse {
     int64 total = 6;
 }
 
+message OrderSumIncomeRequest {
+    string status = 1;
+}
+
+message OrderSumPayload {
+    int64 total = 1;
+}
+
+message OrderSumResponse {
+    bool is_empty = 1;
+    OrderSumPayload payload = 2;
+}
+
 service OrderService {
     rpc Create(OrderCreateRequest) returns (Empty) {}
     rpc ChangeStatus(OrderChangeStatus) returns (OperationResponse) {}
     rpc FindOne(OrderFindOneRequest) returns (Order) {}
     rpc FindAll(OrderFindAllRequest) returns (OrderFindAllResponse) {}
+    rpc SumIncome(OrderSumIncomeRequest) returns (OrderSumResponse) {}
 }

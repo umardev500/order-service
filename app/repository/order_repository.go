@@ -68,6 +68,48 @@ func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Orde
 // 	defer cancel()
 // }
 
+func (pr *OrderRepository) SumIncome() (res int64, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	pipeline := []bson.M{
+		{
+			"$match": bson.M{
+				"status": "settlement",
+			},
+		},
+		{
+			"$group": bson.M{
+				"_id": nil,
+				"total": bson.M{
+					"$sum": "$payment.gross_amount",
+				},
+			},
+		},
+	}
+
+	cur, err := pr.orders.Aggregate(ctx, pipeline)
+	if err != nil {
+		return
+	}
+
+	defer cur.Close(ctx)
+
+	var results []struct {
+		Total int64 `bson:"total"`
+	}
+	cur.All(ctx, &results)
+
+	if len(results) == 0 {
+		err = mongo.ErrNoDocuments
+		return
+	}
+
+	res = results[0].Total
+
+	return
+}
+
 func (pr *OrderRepository) FindAll(req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

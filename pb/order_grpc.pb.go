@@ -26,6 +26,7 @@ type OrderServiceClient interface {
 	ChangeStatus(ctx context.Context, in *OrderChangeStatus, opts ...grpc.CallOption) (*OperationResponse, error)
 	FindOne(ctx context.Context, in *OrderFindOneRequest, opts ...grpc.CallOption) (*Order, error)
 	FindAll(ctx context.Context, in *OrderFindAllRequest, opts ...grpc.CallOption) (*OrderFindAllResponse, error)
+	SumIncome(ctx context.Context, in *OrderSumIncomeRequest, opts ...grpc.CallOption) (*OrderSumResponse, error)
 }
 
 type orderServiceClient struct {
@@ -72,6 +73,15 @@ func (c *orderServiceClient) FindAll(ctx context.Context, in *OrderFindAllReques
 	return out, nil
 }
 
+func (c *orderServiceClient) SumIncome(ctx context.Context, in *OrderSumIncomeRequest, opts ...grpc.CallOption) (*OrderSumResponse, error) {
+	out := new(OrderSumResponse)
+	err := c.cc.Invoke(ctx, "/OrderService/SumIncome", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrderServiceServer is the server API for OrderService service.
 // All implementations must embed UnimplementedOrderServiceServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type OrderServiceServer interface {
 	ChangeStatus(context.Context, *OrderChangeStatus) (*OperationResponse, error)
 	FindOne(context.Context, *OrderFindOneRequest) (*Order, error)
 	FindAll(context.Context, *OrderFindAllRequest) (*OrderFindAllResponse, error)
+	SumIncome(context.Context, *OrderSumIncomeRequest) (*OrderSumResponse, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedOrderServiceServer) FindOne(context.Context, *OrderFindOneReq
 }
 func (UnimplementedOrderServiceServer) FindAll(context.Context, *OrderFindAllRequest) (*OrderFindAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAll not implemented")
+}
+func (UnimplementedOrderServiceServer) SumIncome(context.Context, *OrderSumIncomeRequest) (*OrderSumResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SumIncome not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -184,6 +198,24 @@ func _OrderService_FindAll_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrderService_SumIncome_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderSumIncomeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).SumIncome(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/OrderService/SumIncome",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).SumIncome(ctx, req.(*OrderSumIncomeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrderService_ServiceDesc is the grpc.ServiceDesc for OrderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindAll",
 			Handler:    _OrderService_FindAll_Handler,
+		},
+		{
+			MethodName: "SumIncome",
+			Handler:    _OrderService_SumIncome_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
