@@ -67,11 +67,16 @@ func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Orde
 // 	defer cancel()
 // }
 
-func (pr *OrderRepository) SumIncome(ctx context.Context) (res int64, err error) {
+func (pr *OrderRepository) SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res int64, err error) {
+	status := "settlement"
+	if req.Status != "" {
+		status = req.Status
+	}
+
 	pipeline := []bson.M{
 		{
 			"$match": bson.M{
-				"status": "settlement",
+				"status": status,
 			},
 		},
 		{

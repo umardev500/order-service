@@ -23,8 +23,8 @@ func NewOrderUsecase(repo domain.OrderRepository) domain.OrderUsecase {
 // Template
 // func (pu *OrderUsecase) {}
 
-func (pu *OrderUsecase) SumIncome(ctx context.Context) (res int64, err error) {
-	res, err = pu.repository.SumIncome(ctx)
+func (pu *OrderUsecase) SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res int64, err error) {
+	res, err = pu.repository.SumIncome(ctx, req)
 
 	return
 }
