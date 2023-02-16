@@ -120,6 +120,11 @@ func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequ
 		status = bson.M{"status": bson.M{"$ne": nil}}
 	}
 
+	userId := bson.M{}
+	if req.UserId != "" {
+		userId = bson.M{"buyer.customer_id": req.UserId}
+	}
+
 	filter := bson.M{
 		"$or": []bson.M{
 			{
@@ -157,6 +162,7 @@ func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequ
 		},
 		"$and": []bson.M{
 			status,
+			userId,
 		},
 	}
 	findOpt := options.Find()

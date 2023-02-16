@@ -22,5 +22,8 @@ findOne:
 findAll:
 	grpcurl --plaintext -d '{"status": "pending"}' localhost:5011 OrderService.FindAll
 
+findAllByCustomer:
+	grpcurl --plaintext -d '{"user_id": "1667292823233", "status": "pending"}' localhost:5011 OrderService.FindAll
+
 sum:
 	grpcurl --plaintext -d '{"status": "settlement"}' localhost:5011 OrderService.SumIncome
