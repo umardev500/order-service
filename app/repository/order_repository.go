@@ -130,6 +130,30 @@ func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequ
 					},
 				},
 			},
+			{
+				"status": bson.M{
+					"$regex": primitive.Regex{
+						Pattern: s,
+						Options: "i",
+					},
+				},
+			},
+			{
+				"buyer.name": bson.M{
+					"$regex": primitive.Regex{
+						Pattern: s,
+						Options: "i",
+					},
+				},
+			},
+			{
+				"buyer.user": bson.M{
+					"$regex": primitive.Regex{
+						Pattern: s,
+						Options: "i",
+					},
+				},
+			},
 		},
 		"$and": []bson.M{
 			status,
