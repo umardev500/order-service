@@ -17,7 +17,7 @@ changeStatus:
 	grpcurl --plaintext -d '{"order_id": "1671193878472", "status": "settlement"}' localhost:5011 OrderService.ChangeStatus
 
 findOne:
-	grpcurl --plaintext -d '{"order_id": "1671283098783"}' localhost:5011 OrderService.FindOne
+	grpcurl --plaintext -d '{"order_id": "1676961217179686338"}' localhost:5011 OrderService.FindOne
 
 findAll:
 	grpcurl --plaintext -d '{"status": "pending"}' localhost:5011 OrderService.FindAll

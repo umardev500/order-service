@@ -40,7 +40,7 @@ type Order struct {
 type OrderUsecase interface {
 	Save(ctx context.Context, req *pb.OrderCreateRequest) error
 	ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus) (affected bool, err error)
-	FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error)
+	FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error)
 	FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error)
 	SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res int64, err error)
 }
@@ -48,7 +48,7 @@ type OrderUsecase interface {
 type OrderRepository interface {
 	Save(ctx context.Context, req *pb.OrderCreateRequest, createdTime int64) error
 	ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error)
-	FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error)
+	FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error)
 	FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error)
 	SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res int64, err error)
 }

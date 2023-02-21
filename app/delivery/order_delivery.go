@@ -42,7 +42,7 @@ func (pd *OrderDelivery) FindAll(ctx context.Context, req *pb.OrderFindAllReques
 	return
 }
 
-func (pd *OrderDelivery) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
+func (pd *OrderDelivery) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error) {
 	res, err = pd.usecase.FindOne(ctx, req)
 
 	return

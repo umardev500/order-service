@@ -228,13 +228,20 @@ func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequ
 	return
 }
 
-func (pr *OrderRepository) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
+func (pr *OrderRepository) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error) {
 	var order domain.Order
 
 	filter := bson.M{"order_id": req.OrderId}
 	err = pr.orders.FindOne(ctx, filter).Decode(&order)
+	if err == mongo.ErrNoDocuments {
+		res = &pb.OrderFindOneResponse{IsEmpty: true}
+		err = nil
+		return
+	}
 
-	res = pr.parseOrderResponse(order)
+	res = &pb.OrderFindOneResponse{
+		Payload: pr.parseOrderResponse(order),
+	}
 
 	return
 }

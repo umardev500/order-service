@@ -35,7 +35,7 @@ func (pu *OrderUsecase) FindAll(ctx context.Context, req *pb.OrderFindAllRequest
 	return
 }
 
-func (pu *OrderUsecase) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.Order, err error) {
+func (pu *OrderUsecase) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error) {
 	res, err = pu.repository.FindOne(ctx, req)
 
 	return
