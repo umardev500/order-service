@@ -108,8 +108,8 @@ func (pr *OrderRepository) SumIncome(ctx context.Context, req *pb.OrderSumIncome
 	return
 }
 
-func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error) {
-	orders = &pb.OrderFindAllResponse{}
+func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (result *pb.OrderFindAllResponse, err error) {
+	result = &pb.OrderFindAllResponse{}
 	s := req.Search
 
 	status := bson.M{"status": req.Status}
@@ -175,6 +175,7 @@ func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequ
 	findOpt.SetSkip(offset)
 	findOpt.SetLimit(perPage)
 
+	var orders []*pb.Order
 	if !req.CountOnly {
 		cur, err := pr.orders.Find(ctx, filter, findOpt)
 		if err != nil {
@@ -192,27 +193,37 @@ func (pr *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllRequ
 
 			order := pr.parseOrderResponse(each)
 
-			orders.Orders = append(orders.Orders, order)
+			orders = append(orders, order)
 		}
+
+		if len(orders) < 1 {
+			result.IsEmpty = true
+
+			return result, nil
+		}
+	}
+
+	result.Payload = &pb.OrderFindAllPayload{
+		Orders: orders,
 	}
 
 	rows, _ := pr.orders.CountDocuments(ctx, filter)
 
-	dataSize := int64(len(orders.Orders))
-	orders.Rows = rows
-	orders.Pages = int64(math.Ceil(float64(rows) / float64(perPage)))
+	dataSize := int64(len(result.Payload.Orders))
+	result.Payload.Rows = rows
+	result.Payload.Pages = int64(math.Ceil(float64(rows) / float64(perPage)))
 	if dataSize < 1 {
-		orders.Pages = 0
+		result.Payload.Pages = 0
 	} else if perPage == 0 {
-		orders.Pages = 1
+		result.Payload.Pages = 1
 	}
 
-	orders.PerPage = perPage
-	orders.ActivePage = page + 1
+	result.Payload.PerPage = perPage
+	result.Payload.ActivePage = page + 1
 	if dataSize < 1 {
-		orders.ActivePage = 0
+		result.Payload.ActivePage = 0
 	}
-	orders.Total = dataSize
+	result.Payload.Total = dataSize
 
 	return
 }
