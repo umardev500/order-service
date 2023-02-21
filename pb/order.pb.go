@@ -25,13 +25,13 @@ type Order struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	OrderId   string          `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
-	Buyer     *OrderBuyer     `protobuf:"bytes,2,opt,name=buyer,proto3" json:"buyer,omitempty"`
-	Product   []*OrderProduct `protobuf:"bytes,3,rep,name=product,proto3" json:"product,omitempty"`
-	Payment   *OrderPayment   `protobuf:"bytes,4,opt,name=payment,proto3" json:"payment,omitempty"`
-	Status    string          `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
-	CreatedAt int64           `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt int64           `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	OrderId   string        `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	Buyer     *OrderBuyer   `protobuf:"bytes,2,opt,name=buyer,proto3" json:"buyer,omitempty"`
+	Product   *OrderProduct `protobuf:"bytes,3,opt,name=product,proto3" json:"product,omitempty"`
+	Payment   *OrderPayment `protobuf:"bytes,4,opt,name=payment,proto3" json:"payment,omitempty"`
+	Status    string        `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	CreatedAt int64         `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt int64         `protobuf:"varint,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 }
 
 func (x *Order) Reset() {
@@ -80,7 +80,7 @@ func (x *Order) GetBuyer() *OrderBuyer {
 	return nil
 }
 
-func (x *Order) GetProduct() []*OrderProduct {
+func (x *Order) GetProduct() *OrderProduct {
 	if x != nil {
 		return x.Product
 	}
@@ -850,7 +850,7 @@ var file_pb_order_proto_rawDesc = []byte{
 	0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x64, 0x12, 0x21, 0x0a, 0x05, 0x62, 0x75, 0x79, 0x65,
 	0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x42,
 	0x75, 0x79, 0x65, 0x72, 0x52, 0x05, 0x62, 0x75, 0x79, 0x65, 0x72, 0x12, 0x27, 0x0a, 0x07, 0x70,
-	0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x4f,
+	0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x4f,
 	0x72, 0x64, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x52, 0x07, 0x70, 0x72, 0x6f,
 	0x64, 0x75, 0x63, 0x74, 0x12, 0x27, 0x0a, 0x07, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x18,
 	0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0d, 0x2e, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x50, 0x61, 0x79,

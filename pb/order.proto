@@ -7,7 +7,7 @@ option go_package = "./pb";
 message Order {
     string order_id = 1;
     OrderBuyer buyer = 2;
-    repeated OrderProduct product = 3;
+    OrderProduct product = 3;
     OrderPayment payment = 4;
     string status = 5;
     int64 created_at = 6;

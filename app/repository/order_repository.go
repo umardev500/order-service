@@ -25,15 +25,12 @@ func NewOrderRepository(db *mongo.Database) domain.OrderRepository {
 }
 
 func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Order) {
-	products := []*pb.OrderProduct{}
-	for _, val := range each.Product {
-		products = append(products, &pb.OrderProduct{
-			ProductId:   val.ProductId,
-			Name:        val.Name,
-			Price:       val.Price,
-			Duration:    val.Duration,
-			Description: val.Description,
-		})
+	product := &pb.OrderProduct{
+		ProductId:   each.Product.ProductId,
+		Name:        each.Product.Name,
+		Price:       each.Product.Price,
+		Duration:    each.Product.Duration,
+		Description: each.Product.Name,
 	}
 
 	payment := &pb.OrderPayment{
@@ -51,7 +48,7 @@ func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Orde
 			Name:       each.Buyer.Name,
 			User:       each.Buyer.User,
 		},
-		Product:   products,
+		Product:   product,
 		Payment:   payment,
 		Status:    each.Status,
 		CreatedAt: each.CreatedAt,
