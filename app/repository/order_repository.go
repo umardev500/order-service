@@ -256,18 +256,12 @@ func (pr *OrderRepository) Save(ctx context.Context, req *pb.OrderCreateRequest,
 		{Key: "user", Value: req.Buyer.User},
 	}
 
-	products := []bson.D{}
-
-	for _, val := range req.Product {
-		each := bson.D{
-			{Key: "product_id", Value: val.ProductId},
-			{Key: "name", Value: val.Name},
-			{Key: "price", Value: val.Price},
-			{Key: "duration", Value: val.Duration},
-			{Key: "description", Value: val.Description},
-		}
-
-		products = append(products, each)
+	product := bson.D{
+		{Key: "product_id", Value: req.Product.ProductId},
+		{Key: "name", Value: req.Product.Name},
+		{Key: "price", Value: req.Product.Price},
+		{Key: "duration", Value: req.Product.Duration},
+		{Key: "description", Value: req.Product.Description},
 	}
 
 	payment := bson.D{}
@@ -284,7 +278,7 @@ func (pr *OrderRepository) Save(ctx context.Context, req *pb.OrderCreateRequest,
 	data := bson.D{
 		{Key: "order_id", Value: req.Payment.OrderId},
 		{Key: "buyer", Value: buyer},
-		{Key: "product", Value: products},
+		{Key: "product", Value: product},
 		{Key: "payment", Value: payment},
 		{Key: "status", Value: "pending"},
 		{Key: "created_at", Value: createdTime},
