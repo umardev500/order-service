@@ -48,11 +48,12 @@ func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Orde
 			Name:       each.Buyer.Name,
 			User:       each.Buyer.User,
 		},
-		Product:   product,
-		Payment:   payment,
-		Status:    each.Status,
-		CreatedAt: each.CreatedAt,
-		UpdatedAt: each.UpdatedAt,
+		Product:        product,
+		Payment:        payment,
+		Status:         each.Status,
+		CreatedAt:      each.CreatedAt,
+		UpdatedAt:      each.UpdatedAt,
+		SettlementTime: each.SettlementTime,
 	}
 
 	return

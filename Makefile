@@ -20,7 +20,7 @@ findOne:
 	grpcurl --plaintext -d '{"order_id": "1676961217179686338"}' localhost:5011 OrderService.FindOne
 
 findAll:
-	grpcurl --plaintext -d '{"status": "pending"}' localhost:5011 OrderService.FindAll
+	grpcurl --plaintext -d '' localhost:5011 OrderService.FindAll
 
 findAllByCustomer:
 	grpcurl --plaintext -d '{"user_id": "1667292823233", "status": "pending"}' localhost:5011 OrderService.FindAll

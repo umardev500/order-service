@@ -28,13 +28,14 @@ type OrderPayment struct {
 }
 
 type Order struct {
-	OrderId   string       `bson:"order_id"`
-	Buyer     OrderBuyer   `bson:"buyer"`
-	Product   OrderProduct `bson:"product"`
-	Payment   OrderPayment `bson:"payment"`
-	Status    string       `bson:"status"`
-	CreatedAt int64        `bson:"created_at"`
-	UpdatedAt int64        `bson:"updated_at"`
+	OrderId        string       `bson:"order_id"`
+	Buyer          OrderBuyer   `bson:"buyer"`
+	Product        OrderProduct `bson:"product"`
+	Payment        OrderPayment `bson:"payment"`
+	Status         string       `bson:"status"`
+	CreatedAt      int64        `bson:"created_at"`
+	UpdatedAt      int64        `bson:"updated_at"`
+	SettlementTime int64        `bson:"settlement_time"`
 }
 
 type OrderUsecase interface {
