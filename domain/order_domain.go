@@ -44,6 +44,7 @@ type OrderUsecase interface {
 	FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error)
 	FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error)
 	SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res int64, err error)
+	Cancel(ctx context.Context, req *pb.OrderCancelRequest) (res *pb.OperationResponse, err error)
 }
 
 type OrderRepository interface {
@@ -52,4 +53,5 @@ type OrderRepository interface {
 	FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error)
 	FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (orders *pb.OrderFindAllResponse, err error)
 	SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res int64, err error)
+	Cancel(ctx context.Context, req *pb.OrderCancelRequest) (res *pb.OperationResponse, err error)
 }

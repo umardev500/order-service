@@ -27,3 +27,6 @@ findAllByCustomer:
 
 sum:
 	grpcurl --plaintext -d '{"status": "settlement"}' localhost:5011 OrderService.SumIncome
+
+cancel:
+	grpcurl --plaintext -d '{"order_id": "1677483554496580841", "user_id": "1667292823233"}' localhost:5011 OrderService.Cancel

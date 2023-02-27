@@ -22,36 +22,39 @@ func NewOrderUsecase(repo domain.OrderRepository) domain.OrderUsecase {
 
 // Template
 // func (pu *OrderUsecase) {}
+func (o *OrderUsecase) Cancel(ctx context.Context, req *pb.OrderCancelRequest) (res *pb.OperationResponse, err error) {
+	return o.repository.Cancel(ctx, req)
+}
 
-func (pu *OrderUsecase) SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res int64, err error) {
-	res, err = pu.repository.SumIncome(ctx, req)
+func (o *OrderUsecase) SumIncome(ctx context.Context, req *pb.OrderSumIncomeRequest) (res int64, err error) {
+	res, err = o.repository.SumIncome(ctx, req)
 
 	return
 }
 
-func (pu *OrderUsecase) FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error) {
-	res, err = pu.repository.FindAll(ctx, req)
+func (o *OrderUsecase) FindAll(ctx context.Context, req *pb.OrderFindAllRequest) (res *pb.OrderFindAllResponse, err error) {
+	res, err = o.repository.FindAll(ctx, req)
 
 	return
 }
 
-func (pu *OrderUsecase) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error) {
-	res, err = pu.repository.FindOne(ctx, req)
+func (o *OrderUsecase) FindOne(ctx context.Context, req *pb.OrderFindOneRequest) (res *pb.OrderFindOneResponse, err error) {
+	res, err = o.repository.FindOne(ctx, req)
 
 	return
 }
 
-func (pu *OrderUsecase) ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus) (affected bool, err error) {
+func (o *OrderUsecase) ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus) (affected bool, err error) {
 	updatedTime := time.Now().Unix()
-	affected, err = pu.repository.ChangeStatus(ctx, req, updatedTime)
+	affected, err = o.repository.ChangeStatus(ctx, req, updatedTime)
 
 	return
 }
 
-func (pu *OrderUsecase) Save(ctx context.Context, req *pb.OrderCreateRequest) (err error) {
+func (o *OrderUsecase) Save(ctx context.Context, req *pb.OrderCreateRequest) (err error) {
 	t := time.Now()
 	createdTime := t.Unix()
-	err = pu.repository.Save(ctx, req, createdTime)
+	err = o.repository.Save(ctx, req, createdTime)
 
 	return
 }
