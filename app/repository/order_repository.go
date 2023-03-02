@@ -177,6 +177,14 @@ func (o *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllReque
 					},
 				},
 			},
+			{
+				"product.name": bson.M{
+					"$regex": primitive.Regex{
+						Pattern: s,
+						Options: "i",
+					},
+				},
+			},
 		},
 		"$and": []bson.M{
 			status,
