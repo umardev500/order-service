@@ -55,6 +55,7 @@ func (pr *OrderRepository) parseOrderResponse(each domain.Order) (order *pb.Orde
 		CreatedAt:      each.CreatedAt,
 		UpdatedAt:      each.UpdatedAt,
 		SettlementTime: each.SettlementTime,
+		TrxTime:        each.TrxTime,
 		PayExp:         each.PayExp,
 	}
 
