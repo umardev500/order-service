@@ -13,6 +13,7 @@ message Order {
     int64 created_at = 6;
     int64 updated_at = 7;
     int64 settlement_time = 8;
+    int64 pay_exp = 9;
 }
 
 message OrderProduct {

@@ -36,6 +36,7 @@ type Order struct {
 	CreatedAt      int64        `bson:"created_at"`
 	UpdatedAt      int64        `bson:"updated_at"`
 	SettlementTime int64        `bson:"settlement_time"`
+	PayExp         int64        `bson:"pay_exp"`
 }
 
 type OrderUsecase interface {
