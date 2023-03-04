@@ -328,6 +328,7 @@ func (o *OrderRepository) Save(ctx context.Context, req *pb.OrderCreateRequest, 
 		{Key: "payment", Value: payment},
 		{Key: "status", Value: "pending"},
 		{Key: "created_at", Value: createdTime},
+		{Key: "trx_time", Value: req.TrxTime},
 	}
 
 	filteredData := bson.D{}
