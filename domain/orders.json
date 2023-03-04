@@ -23,6 +23,8 @@
       "gross_amount": 5000
     },
     "status": "pending",
-    "created_at": 1667923039834
+    "created_at": 1667923039834,
+    "trx_time": 1667923039833,
+    "pay_exp": 1667923039850
   }
 ]
