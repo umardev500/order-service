@@ -4,6 +4,7 @@ import (
 	"context"
 	"math"
 	"order/domain"
+	"order/helper"
 	"order/pb"
 	"time"
 
@@ -140,6 +141,24 @@ func (o *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllReque
 		status = bson.M{"status": bson.M{"$ne": nil}}
 	}
 
+	expired := bson.M{}
+	if req.Status == "pending" {
+		expired = bson.M{"pay_exp": bson.M{"$gt": helper.GetTime(nil)}}
+	}
+
+	if req.Status == "cancel" {
+		status = bson.M{"$or": []bson.M{
+			{
+				"status": "cancel",
+			},
+			{
+				"pay_exp": bson.M{
+					"$lt": helper.GetTime(nil),
+				},
+			},
+		}}
+	}
+
 	userId := bson.M{}
 	if req.UserId != "" {
 		userId = bson.M{"buyer.customer_id": req.UserId}
@@ -191,6 +210,7 @@ func (o *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllReque
 		"$and": []bson.M{
 			status,
 			userId,
+			expired,
 		},
 	}
 	findOpt := options.Find()
