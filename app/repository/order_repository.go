@@ -152,8 +152,9 @@ func (o *OrderRepository) FindAll(ctx context.Context, req *pb.OrderFindAllReque
 				"status": "cancel",
 			},
 			{
-				"pay_exp": bson.M{
-					"$lt": helper.GetTime(nil),
+				"$and": []bson.M{
+					{"pay_exp": bson.M{"$lt": helper.GetTime(nil)}},
+					{"status": bson.M{"$ne": "settlement"}},
 				},
 			},
 		}}
