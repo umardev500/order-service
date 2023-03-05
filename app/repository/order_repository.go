@@ -6,6 +6,7 @@ import (
 	"order/domain"
 	"order/helper"
 	"order/pb"
+	"order/variable"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -300,6 +301,9 @@ func (o *OrderRepository) FindOne(ctx context.Context, req *pb.OrderFindOneReque
 
 func (o *OrderRepository) ChangeStatus(ctx context.Context, req *pb.OrderChangeStatus, updatedTime int64) (affected bool, err error) {
 	filter := bson.M{"payment.order_id": req.OrderId}
+	if req.Status == variable.PayementStatusExpire {
+		filter["status"] = bson.M{"$ne": variable.PayementStatusCancel}
+	}
 	data := bson.M{"status": req.Status, "updated_at": updatedTime}
 	if req.Status == "settlement" {
 		data["settlement_time"] = req.SettlementTime
